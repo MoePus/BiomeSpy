@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import terrablender.api.RegionType;
 import terrablender.util.LevelUtils;
 
-@Mixin(value = LevelUtils.class, remap = false)
+@Mixin(LevelUtils.class)
 public abstract class LevelUtilsMixin {
     @Inject(
             method = "initializeBiomes",

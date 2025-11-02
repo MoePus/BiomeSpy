@@ -6,6 +6,6 @@ public class Biomespy implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        CommonClass.init();
+        BiomeSpyCommon.init();
     }
 }

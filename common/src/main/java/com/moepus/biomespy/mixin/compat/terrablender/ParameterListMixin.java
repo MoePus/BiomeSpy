@@ -20,7 +20,7 @@ import terrablender.worldgen.IExtendedParameterList;
 
 import java.util.*;
 
-@Mixin(value = Climate.ParameterList.class, remap = false)
+@Mixin(Climate.ParameterList.class)
 public abstract class ParameterListMixin<T> implements IParameterListExtendedInfo, IExtendedParameterList<T> {
     @Shadow
     @Final

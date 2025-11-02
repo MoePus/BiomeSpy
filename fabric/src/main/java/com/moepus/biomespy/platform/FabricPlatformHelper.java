@@ -2,6 +2,7 @@ package com.moepus.biomespy.platform;
 
 import com.moepus.biomespy.platform.services.IPlatformHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
 
 public class FabricPlatformHelper implements IPlatformHelper {
 
@@ -13,6 +14,11 @@ public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public boolean isModLoaded(String modId) {
         return FabricLoader.getInstance().isModLoaded(modId);
+    }
+
+    @Override
+    public boolean hasLoadingMod(String modId) {
+        return isModLoaded(modId);
     }
 
     @Override

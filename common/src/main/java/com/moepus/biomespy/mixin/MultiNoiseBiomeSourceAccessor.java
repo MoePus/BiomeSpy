@@ -7,7 +7,7 @@ import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(value = MultiNoiseBiomeSource.class, remap = false)
+@Mixin(value = MultiNoiseBiomeSource.class)
 public interface MultiNoiseBiomeSourceAccessor {
     @Invoker
     Climate.ParameterList<Holder<Biome>> invokeParameters();

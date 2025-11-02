@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@Mixin(value = MultiNoiseBiomeSource.class, remap = false)
+@Mixin(value = MultiNoiseBiomeSource.class)
 public abstract class MultiNoiseBiomeSourceMixin extends BiomeSource {
     @Shadow
     protected abstract Climate.ParameterList<Holder<Biome>> parameters();
