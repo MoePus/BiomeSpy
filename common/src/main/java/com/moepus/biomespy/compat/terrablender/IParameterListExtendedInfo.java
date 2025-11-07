@@ -1,6 +1,6 @@
 package com.moepus.biomespy.compat.terrablender;
 
-import com.moepus.biomespy.BiomeEnvelope;
+import com.moepus.biomespy.biome.BiomeEnvelope;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.level.biome.Biome;

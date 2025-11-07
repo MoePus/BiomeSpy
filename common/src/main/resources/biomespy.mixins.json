@@ -6,8 +6,11 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_18",
   "mixins": [
+    "ChunkGeneratorMixin",
     "MultiNoiseBiomeSourceAccessor",
     "MultiNoiseBiomeSourceMixin",
+    "StructureCheckAccessor",
+    "StructureManagerAccessor",
     "compat.terrablender.LevelUtilsMixin",
     "compat.terrablender.ParameterListMixin"
   ],

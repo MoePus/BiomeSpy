@@ -1,6 +1,6 @@
 package com.moepus.biomespy.mixin.compat.terrablender;
 
-import com.moepus.biomespy.BiomeEnvelope;
+import com.moepus.biomespy.biome.BiomeEnvelope;
 import com.moepus.biomespy.compat.terrablender.IParameterListExtendedInfo;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
@@ -65,11 +65,13 @@ public abstract class ParameterListMixin<T> implements IParameterListExtendedInf
     @Override
     public BiomeEnvelope biomeSpy$getEnvelopeForBiomes(List<Holder<Biome>> biomes, int regionIndex) {
         BiomeEnvelope combinedEnvelope = new BiomeEnvelope();
+        combinedEnvelope.impossible = true;
         HashMap<T, BiomeEnvelope> biomeEnvelopeHashMap = this.biomeSpy$uniqueTrees[regionIndex];
         for (Holder<Biome> biome : biomes) {
             BiomeEnvelope envelope = biomeEnvelopeHashMap.get((T) biome);
             if (envelope != null) {
                 combinedEnvelope.add(envelope);
+                combinedEnvelope.impossible = false;
             }
         }
         return combinedEnvelope;
@@ -77,7 +79,7 @@ public abstract class ParameterListMixin<T> implements IParameterListExtendedInf
 
     public Climate.ParameterList<T> clone() {
         try {
-            return (Climate.ParameterList)super.clone();
+            return (Climate.ParameterList) super.clone();
         } catch (CloneNotSupportedException var2) {
             throw new AssertionError();
         }
