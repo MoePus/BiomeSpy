@@ -15,7 +15,7 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureCheckResult;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
@@ -42,8 +42,6 @@ public class StructureChecker {
                              StructureManager pStructureManager, boolean pSkipKnownStructures, StructurePlacement pPlacement,
                              ChunkPos pChunkPos, Climate.ParameterList<Holder<Biome>> parameters) {
         StructureCheckAccessor structureCheckAccessor = (StructureCheckAccessor) (((StructureManagerAccessor) pStructureManager).getStructureCheck());
-        if (!pPlacement.applyAdditionalChunkRestrictions(pChunkPos.x, pChunkPos.z, structureCheckAccessor.getSeed()))
-            return null;
 
         Climate.Sampler sampler = structureCheckAccessor.getRandomState().sampler();
         Object2IntMap<Structure> structureChunkMap = structureCheckAccessor.getLoadedChunks().get(pChunkPos.toLong());
@@ -61,7 +59,7 @@ public class StructureChecker {
                 if (!biomeChecker.matches(sampler))
                     continue;
 
-                structurecheckresult = pStructureManager.checkStructurePresence(pChunkPos, holder.value(), pPlacement, pSkipKnownStructures);
+                structurecheckresult = pStructureManager.checkStructurePresence(pChunkPos, holder.value(), pSkipKnownStructures);
             }
             if (structurecheckresult == StructureCheckResult.START_NOT_PRESENT) continue;
 

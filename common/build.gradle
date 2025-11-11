@@ -1,14 +1,12 @@
 plugins {
     id 'multiloader-common'
-    id 'net.neoforged.moddev'
+    id 'net.neoforged.moddev.legacyforge'
 }
 
-neoForge {
-    neoFormVersion = neo_form_version
-    // Automatically enable AccessTransformers if the file exists
-    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
-    if (at.exists()) {
-        accessTransformers.add(at.absolutePath)
+legacyForge {
+    mcpVersion = minecraft_version
+    if (file("src/main/resources/META-INF/accesstransformer.cfg").exists()) {
+        accessTransformers = ["src/main/resources/META-INF/accesstransformer.cfg"]
     }
     parchment {
         minecraftVersion = parchment_minecraft
@@ -30,13 +28,15 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.ow2.asm:asm-tree:9.6'
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
-    // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
+    compileOnly "org.ow2.asm:asm-tree:9.6"
+    compileOnly "org.ow2.asm:asm-commons:9.6"
+    compileOnly "org.jetbrains:annotations:24.0.1"
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
-
-    compileOnly "curse.maven:terrablender-neoforge-940057:6054947"
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    implementation "curse.maven:terrablender-563928:6290448"
+    //implementation "curse.maven:terrablender-fabric-565956:6290449"
 }
 
 configurations {
@@ -54,4 +54,3 @@ artifacts {
     commonJava sourceSets.main.java.sourceDirectories.singleFile
     commonResources sourceSets.main.resources.sourceDirectories.singleFile
 }
-

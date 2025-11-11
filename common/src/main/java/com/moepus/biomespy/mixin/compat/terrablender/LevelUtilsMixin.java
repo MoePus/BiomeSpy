@@ -24,7 +24,8 @@ public abstract class LevelUtilsMixin {
                     value = "INVOKE",
                     target = "Lterrablender/worldgen/IExtendedParameterList;initializeForTerraBlender(Lnet/minecraft/core/RegistryAccess;Lterrablender/api/RegionType;J)V",
                     shift = At.Shift.AFTER
-            )
+            ),
+            remap = false
     )
     private static void afterInitializeForTerraBlender(
             RegistryAccess registryAccess,

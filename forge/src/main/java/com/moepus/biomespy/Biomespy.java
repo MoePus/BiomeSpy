@@ -6,6 +6,6 @@ import net.minecraftforge.fml.common.Mod;
 public class Biomespy {
 
     public Biomespy() {
-        CommonClass.init();
+        BiomeSpyCommon.init();
     }
 }
