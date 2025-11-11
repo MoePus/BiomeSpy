@@ -1,13 +1,10 @@
 package com.moepus.biomespy.mixin;
 
-import com.moepus.biomespy.biome.BiomeEnvelope;
 import com.moepus.biomespy.biome.BiomeEnvelopeSelector;
 import com.moepus.biomespy.structure.StructureChecker;
-import com.moepus.biomespy.compat.terrablender.TerrablenderCompat;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.QuartPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.StructureManager;
@@ -50,7 +47,7 @@ public abstract class ChunkGeneratorMixin {
         var parameters = ((MultiNoiseBiomeSourceAccessor) biomeSource).invokeParameters();
         Map<Holder<Structure>, BiomeEnvelopeSelector> structureBiome = new HashMap<>();
         for (Holder<Structure> structure : pStructureHoldersSet) {
-            structureBiome.put(structure, new BiomeEnvelopeSelector(structure.value().biomes().stream().toList(), parameters));
+            structureBiome.put(structure, new BiomeEnvelopeSelector(structure.value().biomes().stream().toList(), parameters, (MultiNoiseBiomeSource)biomeSource));
         }
 
         for (int j = -pZ; j <= pZ; j++) {

@@ -25,7 +25,7 @@ public class BiomeFinder {
         if (set.isEmpty()) return null;
 
         var parameters = ((MultiNoiseBiomeSourceAccessor) biomeSource).invokeParameters();
-        BiomeEnvelopeSelector envelopeSelector = new BiomeEnvelopeSelector(set, parameters);
+        BiomeEnvelopeSelector envelopeSelector = new BiomeEnvelopeSelector(set, parameters, biomeSource);
         BiomeNoiseCheckState noiseCheckState = new BiomeNoiseCheckState();
 
         int i = Math.floorDiv(radius * 2, horizontalStep);
