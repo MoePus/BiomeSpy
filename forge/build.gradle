@@ -65,6 +65,9 @@ dependencies {
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.5"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.5"))
     implementation "curse.maven:terrablender-563928:6290448"
+
+    implementation "curse.maven:citadel-331936:6702068"
+    implementation "curse.maven:alexs-caves-924854:5848216"
 }
 
 jar {
