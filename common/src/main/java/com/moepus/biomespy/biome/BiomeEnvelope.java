@@ -48,44 +48,4 @@ public final class BiomeEnvelope {
                 "W=[" + wMin + "," + wMax + "]" +
                 '}';
     }
-
-    public static BiomeEnvelope of(Collection<Holder<Biome>> biomes, MultiNoiseBiomeSource biomeSource, int qx, int qz) {
-        var parameters = ((MultiNoiseBiomeSourceAccessor) biomeSource).invokeParameters();
-
-        if (TerrablenderCompat.TERRABLENDER_INSTALLED) {
-            int uniqueness = ((IExtendedParameterList<?>) parameters).getUniqueness(qx, 0, qz);
-            List<Holder<Biome>> biomesList = biomes instanceof List<Holder<Biome>> list ? list : biomes.stream().toList();
-            BiomeEnvelope envelope = ((IParameterListExtendedInfo) parameters).biomeSpy$getEnvelopeForBiomes(biomesList, uniqueness);
-            if (envelope != null) {
-                return envelope;
-            }
-            return new BiomeEnvelope();
-        }
-
-        BiomeEnvelope biomeEnvelope = new BiomeEnvelope();
-        for (Pair<Climate.ParameterPoint, Holder<Biome>> p : parameters.values()) {
-            Holder<Biome> biome = p.getSecond();
-            if (!biomes.contains(biome)) continue;
-            biomeEnvelope.add(p.getFirst());
-        }
-        return biomeEnvelope;
-    }
-
-    public void update(Collection<Holder<Biome>> biomes, MultiNoiseBiomeSource biomeSource, int qx, int qz) {
-        if (!TerrablenderCompat.TERRABLENDER_INSTALLED) {
-            return;
-        }
-
-        var parameters = ((MultiNoiseBiomeSourceAccessor) biomeSource).invokeParameters();
-        int uniqueness = ((IExtendedParameterList<?>) parameters).getUniqueness(qx, 0, qz);
-        List<Holder<Biome>> biomesList = biomes instanceof List<Holder<Biome>> list ? list : biomes.stream().toList();
-        BiomeEnvelope other = ((IParameterListExtendedInfo) parameters).biomeSpy$getEnvelopeForBiomes(biomesList, uniqueness);
-
-        this.impossible = other.impossible;
-        this.tMin = other.tMin; this.tMax = other.tMax;
-        this.hMin = other.hMin; this.hMax = other.hMax;
-        this.cMin = other.cMin; this.cMax = other.cMax;
-        this.eMin = other.eMin; this.eMax = other.eMax;
-        this.wMin = other.wMin; this.wMax = other.wMax;
-    }
 }

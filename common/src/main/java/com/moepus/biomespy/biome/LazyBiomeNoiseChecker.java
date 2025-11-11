@@ -1,17 +1,24 @@
 package com.moepus.biomespy.biome;
 
+import net.minecraft.core.Holder;
+import net.minecraft.core.QuartPos;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.DensityFunction;
 
 public final class LazyBiomeNoiseChecker {
+    private final BiomeEnvelopeSelector envelopeSelector;
     private final DensityFunction.SinglePointContext ctx;
+    private final Climate.ParameterList<Holder<Biome>> parameters;
     private Long temperature;
     private Long humidity;
     private Long continentalness;
     private Long erosion;
     private Long weirdness;
 
-    public LazyBiomeNoiseChecker(int x, int z) {
+    public LazyBiomeNoiseChecker(BiomeEnvelopeSelector envelopeSelector, Climate.ParameterList<Holder<Biome>> parameters, int x, int z) {
+        this.envelopeSelector = envelopeSelector;
+        this.parameters = parameters;
         this.ctx = new DensityFunction.SinglePointContext(x, 0, z);
     }
 
@@ -45,7 +52,17 @@ public final class LazyBiomeNoiseChecker {
         return weirdness;
     }
 
-    public boolean matches(Climate.Sampler sampler, BiomeEnvelope env) {
+    private long computeDepth(Climate.Sampler sampler, int y) {
+        DensityFunction.SinglePointContext depthCtx = new DensityFunction.SinglePointContext(
+                ctx.blockX(), y, ctx.blockZ());
+        return Climate.quantizeCoord((float) sampler.depth().compute(depthCtx));
+    }
+
+    // Should not use this method if AlexsCaves mod is installed
+    public boolean matches(Climate.Sampler sampler) {
+        BiomeEnvelope env = this.envelopeSelector.getEnvelope(parameters,
+                QuartPos.fromBlock(ctx.blockX()), 0, QuartPos.fromBlock(ctx.blockZ()));
+
         if (env.impossible) return false;
         for (BiomeNoiseCheckState.NoiseType type : BiomeNoiseCheckState.NoiseType.values()) {
             if (!checkSingleNoise(sampler, env, type)) {
@@ -55,7 +72,10 @@ public final class LazyBiomeNoiseChecker {
         return true;
     }
 
-    public boolean matches(Climate.Sampler sampler, BiomeEnvelope env, BiomeNoiseCheckState state) {
+    public boolean matches(Climate.Sampler sampler, BiomeNoiseCheckState state, int y) {
+        BiomeEnvelope env = this.envelopeSelector.getEnvelope(parameters,
+                QuartPos.fromBlock(ctx.blockX()), QuartPos.fromBlock(y), QuartPos.fromBlock(ctx.blockZ()));
+
         if (env.impossible) return false;
 
         BiomeNoiseCheckState.NoiseType priority = state.getLastFilteredNoise();
@@ -116,13 +136,13 @@ public final class LazyBiomeNoiseChecker {
         return true;
     }
 
-    public Climate.TargetPoint toTargetPoint(Climate.Sampler sampler, long depth) {
+    public Climate.TargetPoint toTargetPoint(Climate.Sampler sampler, int y) {
         return new Climate.TargetPoint(
                 getTemperature(sampler),
                 getHumidity(sampler),
                 getContinentalness(sampler),
                 getErosion(sampler),
-                depth,
+                computeDepth(sampler, y),
                 getWeirdness(sampler)
         );
     }

@@ -1,6 +1,7 @@
 package com.moepus.biomespy.mixin;
 
 import com.moepus.biomespy.biome.BiomeEnvelope;
+import com.moepus.biomespy.biome.BiomeEnvelopeSelector;
 import com.moepus.biomespy.structure.StructureChecker;
 import com.moepus.biomespy.compat.terrablender.TerrablenderCompat;
 import com.mojang.datafixers.util.Pair;
@@ -41,13 +42,15 @@ public abstract class ChunkGeneratorMixin {
             Set<Holder<Structure>> pStructureHoldersSet, LevelReader pLevel, StructureManager pStructureManager, int pX, int pY, int pZ, boolean pSkipKnownStructures, long pSeed, RandomSpreadStructurePlacement pSpreadPlacement, CallbackInfoReturnable<Pair<BlockPos, Holder<Structure>>> cir
     ) {
         BiomeSource biomeSource = ((StructureCheckAccessor) (((StructureManagerAccessor) pStructureManager).getStructureCheck())).getBiomeSource();
-        if (!(biomeSource instanceof MultiNoiseBiomeSource multiNoiseBiomeSource)) return;
+        if (!(biomeSource instanceof MultiNoiseBiomeSource)) return;
         cir.cancel();
 
-        int i = pSpreadPlacement.spacing();
-        Map<Holder<Structure>, BiomeEnvelope> structureBiome = new HashMap<>();
+        int spacing = pSpreadPlacement.spacing();
+
+        var parameters = ((MultiNoiseBiomeSourceAccessor) biomeSource).invokeParameters();
+        Map<Holder<Structure>, BiomeEnvelopeSelector> structureBiome = new HashMap<>();
         for (Holder<Structure> structure : pStructureHoldersSet) {
-            structureBiome.put(structure, BiomeEnvelope.of(structure.value().biomes().stream().toList(), multiNoiseBiomeSource, 0, 0));
+            structureBiome.put(structure, new BiomeEnvelopeSelector(structure.value().biomes().stream().toList(), parameters));
         }
 
         for (int j = -pZ; j <= pZ; j++) {
@@ -58,22 +61,12 @@ public abstract class ChunkGeneratorMixin {
 
                 if (!flag && !flag1) continue;
 
-                int regionX = pX + i * j;
-                int regionZ = pY + i * k;
+                int regionX = pX + spacing * j;
+                int regionZ = pY + spacing * k;
                 ChunkPos chunkpos = pSpreadPlacement.getPotentialStructureChunk(pSeed, regionX, regionZ);
 
-                if (TerrablenderCompat.TERRABLENDER_INSTALLED) {
-                    for (var entry : structureBiome.entrySet()) {
-                        Holder<Structure> structure = entry.getKey();
-                        BiomeEnvelope envelope = entry.getValue();
-                        // Todo IStructureXZPosAware
-                        envelope.update(structure.value().biomes().stream().toList(), multiNoiseBiomeSource,
-                                QuartPos.fromBlock(chunkpos.getMinBlockX()), QuartPos.fromBlock(chunkpos.getMinBlockZ()));
-                    }
-                }
-
                 Pair<BlockPos, Holder<Structure>> pair = StructureChecker.getStructureGeneratingAt(structureBiome, pLevel,
-                        pStructureManager, pSkipKnownStructures, pSpreadPlacement, chunkpos);
+                        pStructureManager, pSkipKnownStructures, pSpreadPlacement, chunkpos, parameters);
                 if (pair == null) continue;
 
                 cir.setReturnValue(pair);

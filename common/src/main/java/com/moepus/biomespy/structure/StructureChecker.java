@@ -1,6 +1,7 @@
 package com.moepus.biomespy.structure;
 
 import com.moepus.biomespy.biome.BiomeEnvelope;
+import com.moepus.biomespy.biome.BiomeEnvelopeSelector;
 import com.moepus.biomespy.biome.LazyBiomeNoiseChecker;
 import com.moepus.biomespy.mixin.StructureCheckAccessor;
 import com.moepus.biomespy.mixin.StructureManagerAccessor;
@@ -8,10 +9,12 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.QuartPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
@@ -19,8 +22,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureCheckResult;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
-import net.minecraft.world.level.levelgen.structure.structures.EndCityStructure;
-import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
 import java.util.Map;
 
@@ -39,16 +40,17 @@ public class StructureChecker {
     }
 
     public static Pair<BlockPos, Holder<Structure>>
-    getStructureGeneratingAt(Map<Holder<Structure>, BiomeEnvelope> pStructureHoldersSet, LevelReader pLevel,
+    getStructureGeneratingAt(Map<Holder<Structure>, BiomeEnvelopeSelector> pStructureHoldersSet, LevelReader pLevel,
                              StructureManager pStructureManager, boolean pSkipKnownStructures, StructurePlacement pPlacement,
-                             ChunkPos pChunkPos) {
+                             ChunkPos pChunkPos, Climate.ParameterList<Holder<Biome>> parameters) {
         StructureCheckAccessor structureCheckAccessor = (StructureCheckAccessor) (((StructureManagerAccessor) pStructureManager).getStructureCheck());
         if (!pPlacement.applyAdditionalChunkRestrictions(pChunkPos.x, pChunkPos.z, structureCheckAccessor.getSeed()))
             return null;
 
         Climate.Sampler sampler = structureCheckAccessor.getRandomState().sampler();
         Object2IntMap<Structure> structureChunkMap = structureCheckAccessor.getLoadedChunks().get(pChunkPos.toLong());
-        LazyBiomeNoiseChecker biomeChecker = new LazyBiomeNoiseChecker(pChunkPos.getMinBlockX(), pChunkPos.getMinBlockZ());
+        int x = pChunkPos.getMinBlockX();
+        int z = pChunkPos.getMinBlockZ();
 
         for (var entry : pStructureHoldersSet.entrySet()) {
             Holder<Structure> holder = entry.getKey();
@@ -57,8 +59,8 @@ public class StructureChecker {
             if (structureChunkMap != null) {
                 structurecheckresult = checkStructureInfo(structureChunkMap, holder.value(), pSkipKnownStructures);
             } else {
-                BiomeEnvelope envelope = entry.getValue();
-                if (!biomeChecker.matches(sampler, envelope))
+                LazyBiomeNoiseChecker biomeChecker = new LazyBiomeNoiseChecker(entry.getValue(), parameters, x, z);
+                if (!biomeChecker.matches(sampler))
                     continue;
 
                 structurecheckresult = pStructureManager.checkStructurePresence(pChunkPos, holder.value(), pPlacement, pSkipKnownStructures);

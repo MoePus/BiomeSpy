@@ -19,6 +19,7 @@ import terrablender.api.Regions;
 import terrablender.worldgen.IExtendedParameterList;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 @Mixin(Climate.ParameterList.class)
 public abstract class ParameterListMixin<T> implements IParameterListExtendedInfo, IExtendedParameterList<T> {
@@ -75,6 +76,13 @@ public abstract class ParameterListMixin<T> implements IParameterListExtendedInf
             }
         }
         return combinedEnvelope;
+    }
+
+    @Override
+    public void biomeSpy$visitAllEnvelopes(BiConsumer<Integer, HashMap<Holder<Biome>, BiomeEnvelope>> visitor) {
+        for (int i = 0; i < biomeSpy$uniqueTrees.length; i++) {
+            visitor.accept(i, (HashMap<Holder<Biome>, BiomeEnvelope>)biomeSpy$uniqueTrees[i]);
+        }
     }
 
     public Climate.ParameterList<T> clone() {
