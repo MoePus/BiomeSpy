@@ -1,6 +1,7 @@
 package com.moepus.biomespy.platform.services;
 
 import com.moepus.biomespy.biome.BiomeEnvelope;
+import com.moepus.biomespy.biome.BiomeEnvelopeSelector;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
@@ -50,12 +51,12 @@ public interface IPlatformHelper {
         return isDevelopmentEnvironment() ? "development" : "production";
     }
 
-    default void initPlatformSpecificBiomeEnvelope(Map<Integer, BiomeEnvelope> envelopeMap, Collection<Holder<Biome>> biomes,
+    default void initPlatformSpecificBiomeEnvelope(BiomeEnvelopeSelector envelopeMap, Collection<Holder<Biome>> biomes,
                                                    Climate.ParameterList<Holder<Biome>> parameters, MultiNoiseBiomeSource biomeSource) {
 
     }
 
-    default BiomeEnvelope getPlatformSpecificBiomeEnvelope(Climate.ParameterList<Holder<Biome>> parameters, int qx, int qy, int qz) {
+    default BiomeEnvelope getPlatformSpecificBiomeEnvelope(BiomeEnvelopeSelector envelopeMap, Climate.ParameterList<Holder<Biome>> parameters, int qx, int qy, int qz) {
         return null;
     }
 }

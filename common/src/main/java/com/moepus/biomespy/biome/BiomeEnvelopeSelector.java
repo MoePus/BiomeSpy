@@ -15,6 +15,7 @@ import java.util.Map;
 
 public class BiomeEnvelopeSelector {
     private final Map<Integer, BiomeEnvelope> envelopeMap;
+    private final Map<Class<?>, Object> platformData = new HashMap<>();
 
     public BiomeEnvelopeSelector(Collection<Holder<Biome>> biomes, Climate.ParameterList<Holder<Biome>> parameters, MultiNoiseBiomeSource biomeSource) {
         this.envelopeMap = new HashMap<>();
@@ -36,11 +37,11 @@ public class BiomeEnvelopeSelector {
             }
             this.envelopeMap.put(0, combinedEnvelope);
         }
-        Services.PLATFORM.initPlatformSpecificBiomeEnvelope(this.envelopeMap, biomes, parameters, biomeSource);
+        Services.PLATFORM.initPlatformSpecificBiomeEnvelope(this, biomes, parameters, biomeSource);
     }
 
     public BiomeEnvelope getEnvelope(Climate.ParameterList<Holder<Biome>> parameters, int qx, int qy, int qz) {
-        BiomeEnvelope platformEnvelope = Services.PLATFORM.getPlatformSpecificBiomeEnvelope(parameters, qx, qy, qz);
+        BiomeEnvelope platformEnvelope = Services.PLATFORM.getPlatformSpecificBiomeEnvelope(this, parameters, qx, qy, qz);
         if (platformEnvelope != null) {
             return platformEnvelope;
         }
@@ -49,5 +50,13 @@ public class BiomeEnvelopeSelector {
             return envelopeMap.get(uniqueness);
         }
         return envelopeMap.get(0);
+    }
+
+    public <T> void setPlatformData(Class<?> key, T data) {
+        platformData.put(key, data);
+    }
+
+    public Object getPlatformData(Class<?> key) {
+        return platformData.get(key);
     }
 }
