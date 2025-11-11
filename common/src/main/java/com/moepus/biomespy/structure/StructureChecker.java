@@ -1,6 +1,5 @@
 package com.moepus.biomespy.structure;
 
-import com.moepus.biomespy.biome.BiomeEnvelope;
 import com.moepus.biomespy.biome.BiomeEnvelopeSelector;
 import com.moepus.biomespy.biome.LazyBiomeNoiseChecker;
 import com.moepus.biomespy.mixin.StructureCheckAccessor;
@@ -9,7 +8,6 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.QuartPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;

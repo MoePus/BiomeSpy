@@ -9,7 +9,6 @@ import terrablender.api.RegionType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 public interface IParameterListExtendedInfo {
     void biomeSpy$gatherExtendedInfo(RegistryAccess registryAccess, RegionType regionType, long seed);

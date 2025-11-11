@@ -1,17 +1,6 @@
 package com.moepus.biomespy.biome;
 
-import com.moepus.biomespy.compat.terrablender.IParameterListExtendedInfo;
-import com.moepus.biomespy.compat.terrablender.TerrablenderCompat;
-import com.moepus.biomespy.mixin.MultiNoiseBiomeSourceAccessor;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.Holder;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
-import terrablender.worldgen.IExtendedParameterList;
-
-import java.util.Collection;
-import java.util.List;
 
 public final class BiomeEnvelope {
     public boolean impossible = false;
