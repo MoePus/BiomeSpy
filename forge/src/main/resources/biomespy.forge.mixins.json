@@ -2,8 +2,10 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.moepus.biomespy.mixin",
-  "compatibilityLevel": "JAVA_18",
-  "mixins": [],
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "compat.alexscaves.BiomeGenerationNoiseConditionAccessor"
+  ],
   "client": [
   ],
   "server": [],
