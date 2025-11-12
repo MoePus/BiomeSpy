@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.moepus.biomespy.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "biomespy.refmap.json",
+  "mixins": [
+    "ChunkGeneratorMixin",
+    "MultiNoiseBiomeSourceAccessor",
+    "MultiNoiseBiomeSourceMixin",
+    "StructureCheckAccessor",
+    "StructureManagerAccessor",
+    "compat.alexscaves.BiomeGenerationNoiseConditionAccessor",
+    "compat.terrablender.LevelUtilsMixin",
+    "compat.terrablender.ParameterListMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
