@@ -151,6 +151,7 @@ dependencies {
     }
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     implementation fg.deobf("curse.maven:terrablender-563928:6290448")
+    runtimeOnly fg.deobf("curse.maven:regions-unexplored-659110:5558225")
 
     implementation fg.deobf("curse.maven:citadel-331936:6702068")
     implementation fg.deobf("curse.maven:alexs-caves-924854:5848216")
