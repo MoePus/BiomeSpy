@@ -1,5 +1,7 @@
 package com.moepus.biomespy.biome;
 
+import com.moepus.biomespy.compat.terrablender.TerraBiome;
+import com.moepus.biomespy.compat.terrablender.TerrablenderCompat;
 import com.moepus.biomespy.mixin.MultiNoiseBiomeSourceAccessor;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -39,7 +41,12 @@ public class BiomeFinder {
                 if (!biomeChecker.matches(sampler, noiseCheckState, y))
                     continue;
                 Climate.TargetPoint climate = biomeChecker.toTargetPoint(sampler, y);
-                Holder<Biome> holder = biomeSource.getNoiseBiome(climate);
+                Holder<Biome> holder;
+                if (TerrablenderCompat.TERRABLENDER_INSTALLED) {
+                    holder = TerraBiome.getNoiseBiome(parameters, climate, x, y, z);
+                } else {
+                    holder = biomeSource.getNoiseBiome(climate);
+                }
                 if (set.contains(holder)) {
                     return Pair.of(new BlockPos(x, y, z), holder);
                 }
