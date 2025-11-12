@@ -2,6 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.moepus.biomespy.mixin",
+  "plugin": "com.moepus.biomespy.MixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "biomespy.refmap.json",
   "mixins": [

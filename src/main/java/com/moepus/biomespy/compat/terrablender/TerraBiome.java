@@ -11,4 +11,8 @@ public class TerraBiome {
         return (Holder<Biome>)(((IExtendedParameterList) parameters).
                 findValuePositional(climate, QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z)));
     }
+
+    public static int getUniqueness(Climate.ParameterList<Holder<Biome>> parameters, int qx, int qy, int qz) {
+        return ((IExtendedParameterList<?>) parameters).getUniqueness(qx, qy, qz);
+    }
 }
