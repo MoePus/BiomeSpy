@@ -22,12 +22,6 @@ neoForge {
         client {
             client()
         }
-        data {
-            data()
-        }
-        server {
-            server()
-        }
     }
     mods {
         "${mod_id}" {
@@ -50,8 +44,7 @@ repositories {
 }
 
 dependencies {
-    implementation "curse.maven:terrablender-neoforge-940057:6054947"
-    runtimeOnly "curse.maven:regions-unexplored-659110:6273893"
+    implementation "curse.maven:terrablender-neoforge-940057:7098524"
 }
 
 

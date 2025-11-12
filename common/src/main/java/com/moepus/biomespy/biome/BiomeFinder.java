@@ -31,7 +31,7 @@ public class BiomeFinder {
         BiomeNoiseCheckState noiseCheckState = new BiomeNoiseCheckState();
 
         int i = Math.floorDiv(radius * 2, horizontalStep);
-        int[] heights = Mth.outFromOrigin(pos.getY(), level.getMinBuildHeight() + 1, level.getMaxBuildHeight(), verticalStep).toArray();
+        int[] heights = Mth.outFromOrigin(pos.getY(), level.getMinY() + 1, level.getMaxY() + 1, verticalStep).toArray();
         for (BlockPos.MutableBlockPos blockpos$mutableblockpos : BlockPos.spiralAround(BlockPos.ZERO, i, Direction.EAST, Direction.SOUTH)) {
             int x = pos.getX() + blockpos$mutableblockpos.getX() * horizontalStep;
             int z = pos.getZ() + blockpos$mutableblockpos.getZ() * horizontalStep;
