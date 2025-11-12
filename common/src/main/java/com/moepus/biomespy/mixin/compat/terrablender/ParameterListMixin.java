@@ -39,7 +39,7 @@ public abstract class ParameterListMixin<T> implements IParameterListExtendedInf
         biomeSpy$initialized = true;
 
         biomeSpy$uniqueTrees = new HashMap[Regions.getCount(regionType)];
-        Registry<Biome> biomeRegistry = registryAccess.registryOrThrow(Registries.BIOME);
+        Registry<Biome> biomeRegistry = registryAccess.lookupOrThrow(Registries.BIOME);
         for (Region region : Regions.get(regionType)) {
             int regionIndex = Regions.getIndex(regionType, region.getName());
             if (regionIndex == 0) {
@@ -52,7 +52,7 @@ public abstract class ParameterListMixin<T> implements IParameterListExtendedInf
             } else {
                 HashMap<T, BiomeEnvelope> biomeEnvelopeHashMap = new HashMap<>();
                 region.addBiomes(biomeRegistry, (pair) -> {
-                    Optional<Holder.Reference<Biome>> biome = biomeRegistry.getHolder(pair.getSecond());
+                    Optional<Holder.Reference<Biome>> biome = biomeRegistry.get(pair.getSecond());
                     if (biome.isPresent()) {
                         Holder<Biome> biomeHolder = biome.get();
                         biomeEnvelopeHashMap.computeIfAbsent((T) biomeHolder, k -> new BiomeEnvelope()).add(pair.getFirst());

@@ -28,9 +28,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    modImplementation "curse.maven:terrablender-fabric-565956:6054948"
-    modRuntimeOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:21.1.4"
-    modRuntimeOnly "curse.maven:regions-unexplored-659110:6273884"
+    modImplementation "curse.maven:terrablender-fabric-565956:7098525"
+    modRuntimeOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:21.10.0"
 }
 
 loom {
