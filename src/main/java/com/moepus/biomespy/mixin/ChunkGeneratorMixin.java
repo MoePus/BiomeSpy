@@ -62,6 +62,12 @@ public abstract class ChunkGeneratorMixin {
                 int regionZ = pY + spacing * k;
                 ChunkPos chunkpos = pSpreadPlacement.getPotentialStructureChunk(pSeed, regionX, regionZ);
 
+                StructurePlacementAccessor placement = (StructurePlacementAccessor) pSpreadPlacement;
+                if (placement.getFrequency() < 1.0F &&
+                        !placement.getFrequencyReductionMethod().shouldGenerate(pSeed, placement.getSalt(), chunkpos.x, chunkpos.z, placement.getFrequency())) {
+                    continue;
+                }
+
                 Pair<BlockPos, Holder<Structure>> pair = StructureChecker.getStructureGeneratingAt(structureBiome, pLevel,
                         pStructureManager, pSkipKnownStructures, pSpreadPlacement, chunkpos, parameters);
                 if (pair == null) continue;
