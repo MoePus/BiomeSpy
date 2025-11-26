@@ -38,7 +38,7 @@ public abstract class MultiNoiseBiomeSourceMixin extends BiomeSource {
 //        int yMax = QuartPos.fromBlock(y + radius);
 //        int zMax = QuartPos.fromBlock(z + radius);
 //
-//        int yStep = (radius <= 4) ? (yMax - yMin) : (yMax - yMin) / 2;
+//        int yStep = ((radius <= 4) ? (yMax - yMin) : (yMax - yMin) / 2) + 1;
 //
 //        Set<Holder<Biome>> set = Sets.newHashSet();
 //
