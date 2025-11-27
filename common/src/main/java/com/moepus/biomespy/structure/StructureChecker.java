@@ -1,5 +1,6 @@
 package com.moepus.biomespy.structure;
 
+import com.moepus.biomespy.Constants;
 import com.moepus.biomespy.biome.BiomeEnvelopeSelector;
 import com.moepus.biomespy.biome.LazyBiomeNoiseChecker;
 import com.moepus.biomespy.mixin.StructureCheckAccessor;
@@ -9,6 +10,9 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.StructureManager;
@@ -24,6 +28,9 @@ import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement
 import java.util.Map;
 
 public class StructureChecker {
+    static TagKey<Structure> UNINITED_SAFE_STRUCTURES = TagKey.create(Registries.STRUCTURE,
+            ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "uninit_safe"));
+
     private static boolean tryAddReference(StructureManager pStructureManager, StructureStart pStructureStart) {
         if (pStructureStart.canBeReferenced()) {
             pStructureManager.addReference(pStructureStart);
@@ -65,8 +72,13 @@ public class StructureChecker {
             }
             if (structurecheckresult == StructureCheckResult.START_NOT_PRESENT) continue;
 
-            if (!pSkipKnownStructures && structurecheckresult == StructureCheckResult.START_PRESENT) {
-                return Pair.of(pPlacement.getLocatePos(pChunkPos), holder);
+            if (!pSkipKnownStructures) {
+                if (structurecheckresult == StructureCheckResult.START_PRESENT) {
+                    return Pair.of(pPlacement.getLocatePos(pChunkPos), holder);
+                }
+                if (holder.is(UNINITED_SAFE_STRUCTURES)) {
+                    return Pair.of(pPlacement.getLocatePos(pChunkPos), holder);
+                }
             }
 
             // SkipKnownStructures || StructureCheckResult.CHUNK_LOAD_NEEDED
