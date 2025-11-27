@@ -37,4 +37,12 @@ public final class BiomeEnvelope {
                 "W=[" + wMin + "," + wMax + "]" +
                 '}';
     }
+
+    boolean isValid() {
+        return  tMin != tMax &&
+                hMin != hMax &&
+                cMin != cMax &&
+                eMin != eMax &&
+                wMin != wMax;
+    }
 }

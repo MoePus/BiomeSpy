@@ -41,6 +41,11 @@ public class BiomeEnvelopeSelector {
             }
             this.envelopeMap.put(0, combinedEnvelope);
         }
+        for (Integer i : this.envelopeMap.keySet()) {
+            BiomeEnvelope env = this.envelopeMap.get(i);
+            if (!env.isValid())
+                this.envelopeMap.put(i, new BiomeEnvelope()); // Full range
+        }
         //Services.PLATFORM.initPlatformSpecificBiomeEnvelope(this, biomes, parameters, biomeSource);
     }
 
