@@ -20,7 +20,8 @@ public class BiomeEnvelopeSelector {
 
     public BiomeEnvelopeSelector(Collection<Holder<Biome>> biomes, Climate.ParameterList<Holder<Biome>> parameters, MultiNoiseBiomeSource biomeSource) {
         this.envelopeMap = new HashMap<>();
-        if (TerrablenderCompat.TERRABLENDER_INSTALLED) {
+        if (TerrablenderCompat.TERRABLENDER_INSTALLED &&
+                ((IParameterListExtendedInfo) parameters).biomeSpy$terraBlenderEnabled()) {
             ((IParameterListExtendedInfo) parameters).biomeSpy$visitAllEnvelopes((index, map) -> {
                 BiomeEnvelope combinedEnvelope = new BiomeEnvelope();
                 combinedEnvelope.impossible = true;
@@ -42,6 +43,11 @@ public class BiomeEnvelopeSelector {
                 }
             }
             this.envelopeMap.put(0, combinedEnvelope);
+        }
+        for (Integer i : this.envelopeMap.keySet()) {
+            BiomeEnvelope env = this.envelopeMap.get(i);
+            if (!env.isValid())
+                this.envelopeMap.put(i, new BiomeEnvelope()); // Full range
         }
         if (AlexsCavesCompat.ALEXS_CAVES_INSTALLED) {
             AlexBiome.initAlexsCavesData(this, biomes, parameters, biomeSource);

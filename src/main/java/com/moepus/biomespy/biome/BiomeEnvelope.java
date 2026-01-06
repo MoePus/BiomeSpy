@@ -77,4 +77,12 @@ public final class BiomeEnvelope {
         }
         return true;
     }
+
+    boolean isValid() {
+        return  tMin != tMax &&
+                hMin != hMax &&
+                cMin != cMax &&
+                eMin != eMax &&
+                wMin != wMax;
+    }
 }
