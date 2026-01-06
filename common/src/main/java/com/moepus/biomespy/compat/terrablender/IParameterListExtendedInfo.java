@@ -16,4 +16,6 @@ public interface IParameterListExtendedInfo {
     BiomeEnvelope biomeSpy$getEnvelopeForBiomes(List<Holder<Biome>> biomes, int regionIndex);
 
     void biomeSpy$visitAllEnvelopes(BiConsumer<Integer, HashMap<Holder<Biome>, BiomeEnvelope>> visitor);
+
+    boolean biomeSpy$terraBlenderEnabled();
 }

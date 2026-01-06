@@ -85,6 +85,11 @@ public abstract class ParameterListMixin<T> implements IParameterListExtendedInf
         }
     }
 
+    @Override
+    public boolean biomeSpy$terraBlenderEnabled() {
+        return biomeSpy$initialized;
+    }
+
     public Climate.ParameterList<T> clone() {
         try {
             return (Climate.ParameterList) super.clone();

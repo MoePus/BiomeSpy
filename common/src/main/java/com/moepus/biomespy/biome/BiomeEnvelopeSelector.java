@@ -18,7 +18,8 @@ public class BiomeEnvelopeSelector {
 
     public BiomeEnvelopeSelector(Collection<Holder<Biome>> biomes, Climate.ParameterList<Holder<Biome>> parameters, MultiNoiseBiomeSource biomeSource) {
         this.envelopeMap = new HashMap<>();
-        if (TerrablenderCompat.TERRABLENDER_INSTALLED) {
+        if (TerrablenderCompat.TERRABLENDER_INSTALLED &&
+                ((IParameterListExtendedInfo) parameters).biomeSpy$terraBlenderEnabled()) {
             ((IParameterListExtendedInfo) parameters).biomeSpy$visitAllEnvelopes((index, map) -> {
                 BiomeEnvelope combinedEnvelope = new BiomeEnvelope();
                 combinedEnvelope.impossible = true;
