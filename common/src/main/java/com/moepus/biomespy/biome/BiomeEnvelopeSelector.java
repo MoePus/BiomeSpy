@@ -55,7 +55,8 @@ public class BiomeEnvelopeSelector {
 //        if (platformEnvelope != null) {
 //            return platformEnvelope;
 //        }
-        if (TerrablenderCompat.TERRABLENDER_INSTALLED) {
+        if (TerrablenderCompat.TERRABLENDER_INSTALLED &&
+                ((IParameterListExtendedInfo) parameters).biomeSpy$terraBlenderEnabled()) {
             int uniqueness = TerraBiome.getUniqueness(parameters, qx, qy, qz);
             return envelopeMap.get(uniqueness);
         }
