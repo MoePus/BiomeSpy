@@ -10,10 +10,6 @@ neoForge {
     if (at.exists()) {
         accessTransformers.add(at.absolutePath)
     }
-    parchment {
-        minecraftVersion = parchment_minecraft
-        mappingsVersion = parchment_version
-    }
     runs {
         configureEach {
             systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
@@ -44,7 +40,7 @@ repositories {
 }
 
 dependencies {
-    implementation "curse.maven:terrablender-neoforge-940057:7098524"
+    implementation "curse.maven:terrablender-neoforge-940057:7834071"
 }
 
 

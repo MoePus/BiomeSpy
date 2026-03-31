@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class StructureChecker {
     static TagKey<Structure> UNINITED_SAFE_STRUCTURES = TagKey.create(Registries.STRUCTURE,
-            ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "uninit_safe"));
+            Identifier.fromNamespaceAndPath(Constants.MOD_ID, "uninit_safe"));
 
     private static boolean tryAddReference(StructureManager pStructureManager, StructureStart pStructureStart) {
         if (pStructureStart.canBeReferenced()) {
@@ -49,11 +49,11 @@ public class StructureChecker {
                              StructureManager pStructureManager, boolean pSkipKnownStructures, StructurePlacement pPlacement,
                              ChunkPos pChunkPos, Climate.ParameterList<Holder<Biome>> parameters) {
         StructureCheckAccessor structureCheckAccessor = (StructureCheckAccessor) (((StructureManagerAccessor) pStructureManager).getStructureCheck());
-        if (!pPlacement.applyAdditionalChunkRestrictions(pChunkPos.x, pChunkPos.z, structureCheckAccessor.getSeed()))
+        if (!pPlacement.applyAdditionalChunkRestrictions(pChunkPos.x(), pChunkPos.z(), structureCheckAccessor.getSeed()))
             return null;
 
         Climate.Sampler sampler = structureCheckAccessor.getRandomState().sampler();
-        Object2IntMap<Structure> structureChunkMap = structureCheckAccessor.getLoadedChunks().get(pChunkPos.toLong());
+        Object2IntMap<Structure> structureChunkMap = structureCheckAccessor.getLoadedChunks().get(pChunkPos.pack());
         int x = pChunkPos.getMinBlockX();
         int z = pChunkPos.getMinBlockZ();
 
@@ -82,7 +82,7 @@ public class StructureChecker {
             }
 
             // SkipKnownStructures || StructureCheckResult.CHUNK_LOAD_NEEDED
-            ChunkAccess chunkaccess = pLevel.getChunk(pChunkPos.x, pChunkPos.z, ChunkStatus.STRUCTURE_STARTS);
+            ChunkAccess chunkaccess = pLevel.getChunk(pChunkPos.x(), pChunkPos.z(), ChunkStatus.STRUCTURE_STARTS);
             StructureStart structurestart = pStructureManager.getStartForStructure(SectionPos.bottomOf(chunkaccess), holder.value(), chunkaccess);
             if (structurestart != null && structurestart.isValid() && (!pSkipKnownStructures || tryAddReference(pStructureManager, structurestart))) {
                 return Pair.of(pPlacement.getLocatePos(structurestart.getChunkPos()), holder);
